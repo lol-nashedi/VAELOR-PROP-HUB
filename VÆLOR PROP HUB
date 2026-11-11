@@ -1,0 +1,237 @@
+local Luna = loadstring(game:HttpGet("https://raw.githubusercontent.com/Nebula-Softworks/Luna-Interface-Suite/main/source.lua", true))()
+
+local Window = Luna:CreateWindow({
+    Name = "VÆLOR PROP HUB ( Brookhaven 🏡 )",
+    Subtitle = nil,
+    LogoID = "17842067503",
+    LoadingEnabled = true,
+    LoadingTitle = "Loading...",
+    LoadingSubtitle = "Ty for choosing us twin...",
+    ConfigSettings = {
+        RootFolder = nil,
+        ConfigFolder = "Vælor Hub"
+    },
+    KeySystem = false
+})
+
+--// Helper: URL se script load karke chalata hai
+local function RunScript(url)
+    local ok, err = pcall(function()
+        loadstring(game:HttpGet(url))()
+    end)
+    if not ok then
+        warn("Script error: " .. tostring(err))
+        Luna:Notification({
+            Title = "Error",
+            Icon = "error",
+            ImageSource = "Material",
+            Content = "Script load nahi hui, console check karo."
+        })
+    end
+end
+
+local Players = game:GetService("Players")
+local TeleportService = game:GetService("TeleportService")
+local HttpService = game:GetService("HttpService")
+local LocalPlayer = Players.LocalPlayer
+
+--// Info tab (sabse pehle banao taaki upar dikhe)
+local InfoTab = Window:CreateTab({
+    Name = "Info",
+    Icon = "info",
+    ImageSource = "Material",
+    ShowTitle = true
+})
+
+InfoTab:CreateParagraph({
+    Title = "VÆLOR Community",
+    Text = "Join the Discord official"
+})
+
+InfoTab:CreateButton({
+    Name = "Copy Link",
+    Callback = function()
+        local discord = "https://discord.gg/rQ4Sv2x7"
+        if setclipboard then
+            setclipboard(discord)
+            Luna:Notification({
+                Title = "Discord",
+                Icon = "check_circle",
+                ImageSource = "Material",
+                Content = "Discord link copied!"
+            })
+        else
+            print("Discord: " .. discord)
+        end
+    end
+})
+
+InfoTab:CreateParagraph({
+    Title = "VÆLOR PROP HUB for Brookhaven RP",
+    Text = "Props, emotes, music and more, all in one hub."
+})
+
+InfoTab:CreateParagraph({
+    Title = "Information",
+    Text = "Owner: N0T_Z0RO100\nCredits: Gaze_, rdjrnkdmf"
+})
+
+InfoTab:CreateButton({
+    Name = "Rejoin",
+    Callback = function()
+        if #Players:GetPlayers() <= 1 then
+            LocalPlayer:Kick("\nRejoining...")
+            task.wait()
+            TeleportService:Teleport(game.PlaceId, LocalPlayer)
+        else
+            TeleportService:TeleportToPlaceInstance(game.PlaceId, game.JobId, LocalPlayer)
+        end
+    end
+})
+
+InfoTab:CreateButton({
+    Name = "Server Hop",
+    Callback = function()
+        local found = false
+        local ok = pcall(function()
+            local url = "https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?sortOrder=Asc&limit=100"
+            local data = HttpService:JSONDecode(game:HttpGet(url))
+            for _, sv in ipairs(data.data) do
+                if sv.playing < sv.maxPlayers and sv.id ~= game.JobId then
+                    found = true
+                    TeleportService:TeleportToPlaceInstance(game.PlaceId, sv.id, LocalPlayer)
+                    return
+                end
+            end
+        end)
+        if not ok or not found then
+            Luna:Notification({
+                Title = "Error",
+                Icon = "error",
+                ImageSource = "Material",
+                Content = "Koi server nahi mila, dobara try karo."
+            })
+        end
+    end
+})
+
+local Tab = Window:CreateTab({
+    Name = "Props",
+    Icon = "extension",
+    ImageSource = "Material",
+    ShowTitle = true
+})
+
+local Props = {
+    { "Wing Prop2", "https://pastefy.app/RM1MkrT4/raw" },
+    { "Wing Prop", "https://pastefy.app/IJHHtWR6/raw" },
+    { "Shark Prop", "https://pastefy.app/thWRWou1/raw" },
+    { "B2 Spirit Prop", "https://pastefy.app/b0JRIsKj/raw" },
+    { "Avarice Scythe", "https://pastefy.app/oneTZn9W/raw" },
+    { "Gojo Controller", "https://pastefy.app/3MShESQ2/raw" },
+    { "Wither Prop", "https://pastefy.app/q4Js0TjY/raw" },
+    { "Wither Storm", "https://pastefy.app/5NOFcoUP/raw" },
+    { "Wither Prop2", "https://pastefy.app/6jvLhYaS/raw" },
+    { "B2-Spirit2", "https://pastefy.app/we9aonad/raw" },
+    { "Wither3", "https://pastefy.app/0eGHRHNp/raw" },
+    { "Wither Storm2", "https://pastefy.app/r4nWQYzg/raw" },
+    { "Verity Prop", "https://pastefy.app/x1BOck3z/raw" },
+    { "Godzilla Prop", "https://raw.githubusercontent.com/Johan319/Fe-Godzilla-Obfuscator/refs/heads/main/godzilla" },
+    { "Raiden (Dyton Security)", "https://encrypt-x.pages.dev/Scripts?Id=raidenmaru" },
+    { "Nothing Panel (Mecha)", "https://rawscripts.net/raw/Brookhaven-RP-Nothing-Panel-223707" },
+    { "Wing Prop3", "https://pastefy.app/6ZVZWkbb/raw" },
+    { "Ender Dragon", "https://pastefy.app/knN2ER4f/raw" },
+    { "Radar Terror", "https://pastefy.app/lXwhhrxw/raw" },
+    { "B2 Spirit Prop3", "https://pastefy.app/J35BTsjO/raw" },
+    { "Rodan Prop", "https://pastefy.app/MeSs5ehk/raw" },
+    { "Dual Spider Engine", "https://rawscripts.net/raw/Brookhaven-RP-Engine-spider-props-use-sit-props-243775" },
+    { "Spear Prop", "https://pastefy.app/pDY43Jvl/raw" },
+    { "Curse Engine", "https://pastefy.app/LCb15eUP/raw" },
+    { "Sukuna", "https://pastefy.app/XvOVpQB0/raw" },
+    { "SCMD Prop (Key Xiandi)", "https://rawscripts.net/raw/Brookhaven-RP-Wings-cmback-use-prop-Brookhaven-key-xiandi-211092" },
+    { "Avarice Prop", "https://rawscripts.net/raw/Brookhaven-RP-AVARICE-WINGS-BY-NIZAM-217994" },
+    { "Eryx (Key: ErYxOnToP)", "https://rawscripts.net/raw/Universal-Script-ErYx-Prop-Animations-by-vansh-238691" },
+    { "TXR Prop", "https://rawscripts.net/raw/Universal-Script-TXR-ASHU-ROBOT-POWERFULL-TROLL-SCRIPT-241380" },
+    { "Reptile", "https://pastefy.app/vtA0dM2D/raw" },
+    { "Wings Prop V4", "https://rawscripts.net/raw/Universal-Script-Wings-By-yanzz-227428" },
+    { "Immortal Demon", "https://pastefy.app/50yM3llG/raw" },
+    { "Leviathan", "https://pastefy.app/tPvt3Uv8/raw" },
+    { "Hand Prop", "https://pastefy.app/8oXtJqyl/raw" },
+    { "Soul Revenger", "https://pastefy.app/DyTYj5Yu/raw" },
+    { "Siren Head The Nightmare Stalker (Dyton Security)", "https://api.rubis.app/v2/scrap/sOHDXpo9eskJoAu4/raw" },
+    { "Susano", "https://pastefy.app/90HgaYmZ/raw" },
+    { "Susano 2", "https://pastefy.app/QSpPmcOu/raw" },
+    { "plane prop", "https://pastefy.app/1cxYPFnt/raw?part=Phi%20c%C6%A1%20brookhaven" },
+    { "Wither Storm 3", "https://pastefy.app/l4ELsID8/raw" },
+    { "All Seeing Hand", "https://pastefy.app/cYwNpzjP/raw" },
+}
+
+for _, p in ipairs(Props) do
+    Tab:CreateButton({
+        Name = p[1],
+        Callback = function()
+            RunScript(p[2])
+        end
+    })
+end
+
+local ExtraTab = Window:CreateTab({
+    Name = "Extra",
+    Icon = "star",
+    ImageSource = "Material",
+    ShowTitle = true
+})
+
+local ExtraScripts = {
+    { "CHAT BYPASSER", "https://haxhell.com/raw/universal-script-must-v4-chat-bypasser" },
+    { "VÆLOR EMOTE PANEL", "https://raw.githubusercontent.com/lol-nashedi/VAELOR-EMOTE-PANEL/main/V%C3%86LOR%20EMOTE%20PANEL%20BY%20N0T_Z0RO100" },
+    { "VÆLOR MUSIC", "https://raw.githubusercontent.com/lol-nashedi/VAELOR-MUSIC-PANEL-1K-IDS-/main/V%C3%86LOR%20MUSIC%20PANEL%201K%20IDS" },
+    { "VÆLOR RECHAT", "https://raw.githubusercontent.com/lol-nashedi/Final-rechat/main/V%C3%86LOR%20RECHAT%20BY%20N0T_Z0RO100" },
+    { "MUSIC HUB", "https://raw.githubusercontent.com/lol-nashedi/VAELOR-MUSIC-LOL/main/V%C3%86LOR%20MUSIC%20HUB%20BY%20N0T_Z0RO100" },
+    { "VÆLOR ANTI BANG", "https://raw.githubusercontent.com/lol-nashedi/VAELOR-ANTI-BANG/main/V%C3%86LOR%20360%C2%B0%20ANTI%20BANG" },
+    { "VÆLOR CATALOG", "https://raw.githubusercontent.com/lol-nashedi/VAELOR-FINAL-CATALOG/main/V%C3%86LOR%20CATALOG%20BY%20N0T_Z0RO100" },
+    { "VÆLOR UGC ANIMATION", "https://raw.githubusercontent.com/lol-nashedi/VAELOR-EMOTE-PANEL-V2/main/V%C3%86LOR%20EMOTE%20PANEL%20V2" },
+    { "RUMI MUSIC HUB", "https://flowauth.net/v1/loaders/4a81756b2b02ea9654a7feaf4479165a.lua" },
+    { "VÆLOR PARTICLE GIVER", "https://raw.githubusercontent.com/lol-nashedi/VAELOR-FE-PARTICLE-/main/V%C3%86LOR%20PARTICLE%20GIVER" },
+    -- naye scripts yahan add karo:
+    -- { "Naam", "URL" },
+}
+
+for _, s in ipairs(ExtraScripts) do
+    ExtraTab:CreateButton({
+        Name = s[1],
+        Callback = function()
+            RunScript(s[2])
+        end
+    })
+end
+
+--// AUTO RP Name + Bio + Red Fade (script chalte hi apne aap lagta hai)
+task.spawn(function()
+    local RP_NAME = "VÆLOR PROP HUB"
+    local RP_BIO = "more than 40 props creation"
+
+    local ok, RE = pcall(function()
+        return game:GetService("ReplicatedStorage"):WaitForChild("RE", 10)
+    end)
+    if not ok or not RE then return end
+
+    pcall(function()
+        RE["1RPNam1eTex1t"]:FireServer("RolePlayName", RP_NAME)
+        RE["1RPNam1eTex1t"]:FireServer("RolePlayBio", RP_BIO)
+    end)
+
+    local red = Color3.fromRGB(255, 0, 0)
+    local dark = Color3.fromRGB(100, 0, 0)
+    local t0 = tick()
+    while true do
+        -- red -> dark red -> red, loop
+        local a = (1 - math.cos((tick() - t0) * 2)) / 2
+        local color = red:Lerp(dark, a)
+        pcall(function()
+            RE["1RPNam1eColo1r"]:FireServer("PickingRPNameColor", color)
+            RE["1RPNam1eColo1r"]:FireServer("PickingRPBioColor", color)
+        end)
+        task.wait(0.15)
+    end
+end)
